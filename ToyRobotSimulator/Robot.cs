@@ -11,19 +11,57 @@ namespace ToyRobotSimulator
         public Robot()
         {
             X = Y = 0;
-            Direction = "North";
+            Direction = "NORTH";
         }
 
         public Robot(int x, int y, string direction)
         {
             this.X = x;
             this.Y = y;
-            this.Direction = direction;
+            this.Direction = direction.ToUpper();
         }
 
         public string Report()
         {
-            return $"{X},{Y},{Direction.ToUpper()}";
+            return $"{X},{Y},{Direction}";
+        }
+
+        public void Left()
+        {
+            switch (Direction)
+            {
+                case "NORTH":
+                    Direction = "WEST";
+                    break;
+                case "SOUTH":
+                    Direction = "EAST";
+                    break;
+                case "EAST":
+                    Direction = "NORTH";
+                    break;
+                case "WEST":
+                    Direction = "SOUTH";
+                    break;
+            }
+        }
+
+        public void Right()
+        {
+            switch (Direction)
+            {
+                case "NORTH":
+                    Direction = "EAST";
+                    break;
+                case "SOUTH":
+                    Direction = "WEST";
+                    break;
+                case "EAST":
+                    Direction = "SOUTH";
+                    break;
+                case "WEST":
+                    Direction = "NORTH";
+                    break;
+            }
         }
     }
 }
