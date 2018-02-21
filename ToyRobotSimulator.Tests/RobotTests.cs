@@ -24,58 +24,52 @@ namespace ToyRobotSimulator.Tests
             Assert.Equal(result, "1,3,EAST");
         }
 
-        [Fact]
-        public void CanTurnLeftCorrectly()
+        [Theory]
+        [InlineData("North", "WEST")]
+        [InlineData("East", "NORTH")]
+        [InlineData("South", "EAST")]
+        [InlineData("West", "SOUTH")]
+        public void CanTurnLeftCorrectly(string facing, string expectedFacing)
         {
-            var robot = new Robot(0, 0, "North");
+            var robot = new Robot(0, 0, facing);
 
             robot.Left();
 
-            var p1 = robot.Report();
+            var result = robot.Report();
 
-            robot.Left();
-
-            var p2 = robot.Report();
-
-            robot.Left();
-
-            var p3 = robot.Report();
-
-            robot.Left();
-
-            var p4 = robot.Report();
-
-            Assert.Equal(p1, "0,0,WEST");
-            Assert.Equal(p2, "0,0,SOUTH");
-            Assert.Equal(p3, "0,0,EAST");
-            Assert.Equal(p4, "0,0,NORTH");
+            Assert.Equal(result, $"0,0,{expectedFacing}");
         }
 
-        [Fact]
-        public void CanTurnRightCorrectly()
+        [Theory]
+        [InlineData("North", "EAST")]
+        [InlineData("East", "SOUTH")]
+        [InlineData("South", "WEST")]
+        [InlineData("West", "NORTH")]
+        public void CanTurnRightCorrectly(string facing, string expectedFacing)
         {
-            var robot = new Robot(0, 0, "North");
+            var robot = new Robot(0, 0, facing);
 
             robot.Right();
 
-            var p1 = robot.Report();
+            var result = robot.Report();
 
-            robot.Right();
+            Assert.Equal(result, $"0,0,{expectedFacing}");
+        }
 
-            var p2 = robot.Report();
+        [Theory]
+        [InlineData("North", "1,2,NORTH")]
+        [InlineData("South", "1,0,SOUTH")]
+        [InlineData("East", "2,1,EAST")]
+        [InlineData("West", "0,1,WEST")]
+        public void CanMoveRobot(string facing, string expected)
+        {
+            var robot = new Robot(1, 1, facing);
 
-            robot.Right();
+            robot.Move();
 
-            var p3 = robot.Report();
+            var result = robot.Report();
 
-            robot.Right();
-
-            var p4 = robot.Report();
-
-            Assert.Equal(p1, "0,0,EAST");
-            Assert.Equal(p2, "0,0,SOUTH");
-            Assert.Equal(p3, "0,0,WEST");
-            Assert.Equal(p4, "0,0,NORTH");
+            Assert.Equal(result, expected);
         }
     }
 }

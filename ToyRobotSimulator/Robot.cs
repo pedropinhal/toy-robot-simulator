@@ -63,5 +63,24 @@ namespace ToyRobotSimulator
                     break;
             }
         }
+
+        public void Move()
+        {
+            switch (Direction)
+            {
+                case "NORTH":
+                    Y++;
+                    break;
+                case "SOUTH":
+                    Y--;
+                    break;
+                case "EAST":
+                    X++;
+                    break;
+                case "WEST":
+                    X--;
+                    break;
+            }
+        }
     }
 }
