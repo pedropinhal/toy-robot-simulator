@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace ToyRobotSimulator.Tests
@@ -7,7 +8,7 @@ namespace ToyRobotSimulator.Tests
         [Fact]
         public void CanCreateRobotAndReportDefaultPosition()
         {
-            var robot = new Robot();
+            var robot = new Robot(new Map());
 
             var result = robot.Report();
 
@@ -70,6 +71,30 @@ namespace ToyRobotSimulator.Tests
             var result = robot.Report();
 
             Assert.Equal(result, expected);
+        }
+
+        [Fact]
+        public void CanPlaceRobotOnMap()
+        {
+            var robot = new Robot(new Map());
+
+            robot.Place(1, 2, "North");
+
+            Assert.Equal(robot.Report(), "1,2,NORTH");
+        }
+
+        [Theory]
+        [InlineData(3, 2)]
+        [InlineData(2, 3)]
+        [InlineData(3, 3)]
+        [InlineData(-1, 2)]
+        [InlineData(1, -2)]
+        [InlineData(-1, -2)]
+        public void CannotPlaceRobotOutOfMapBounds(int x, int y)
+        {
+            var robot = new Robot(new Map(2, 2));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => robot.Place(x, y, "North"));
         }
     }
 }

@@ -6,67 +6,71 @@ namespace ToyRobotSimulator
     {
         private int X;
         private int Y;
-        private string Direction;
+        private string Facing;
+        public int MaxX { get; private set; }
+        public int MaxY { get; private set; }
 
-        public Robot()
+        public Robot(Map map)
         {
+            MaxX = map.Width;
+            MaxY = map.Height;
             X = Y = 0;
-            Direction = "NORTH";
+            Facing = "NORTH";
         }
 
-        public Robot(int x, int y, string direction)
+        public Robot(int x, int y, string facing)
         {
             this.X = x;
             this.Y = y;
-            this.Direction = direction.ToUpper();
+            this.Facing = facing.ToUpper();
         }
 
         public string Report()
         {
-            return $"{X},{Y},{Direction}";
+            return $"{X},{Y},{Facing}";
         }
 
         public void Left()
         {
-            switch (Direction)
+            switch (Facing)
             {
                 case "NORTH":
-                    Direction = "WEST";
+                    Facing = "WEST";
                     break;
                 case "SOUTH":
-                    Direction = "EAST";
+                    Facing = "EAST";
                     break;
                 case "EAST":
-                    Direction = "NORTH";
+                    Facing = "NORTH";
                     break;
                 case "WEST":
-                    Direction = "SOUTH";
+                    Facing = "SOUTH";
                     break;
             }
         }
 
         public void Right()
         {
-            switch (Direction)
+            switch (Facing)
             {
                 case "NORTH":
-                    Direction = "EAST";
+                    Facing = "EAST";
                     break;
                 case "SOUTH":
-                    Direction = "WEST";
+                    Facing = "WEST";
                     break;
                 case "EAST":
-                    Direction = "SOUTH";
+                    Facing = "SOUTH";
                     break;
                 case "WEST":
-                    Direction = "NORTH";
+                    Facing = "NORTH";
                     break;
             }
         }
 
         public void Move()
         {
-            switch (Direction)
+            switch (Facing)
             {
                 case "NORTH":
                     Y++;
@@ -81,6 +85,18 @@ namespace ToyRobotSimulator
                     X--;
                     break;
             }
+        }
+
+        public void Place(int x, int y, string facing)
+        {
+            if (x > MaxX || x < 0 || y > MaxY || y < 0)
+            {
+                throw new ArgumentOutOfRangeException($"{MaxX}{MaxY}");
+            }
+            
+            X = x;
+            Y = y;
+            Facing = facing.ToUpper();
         }
     }
 }
