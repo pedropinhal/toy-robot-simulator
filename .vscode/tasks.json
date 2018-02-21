@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+            "build",
+            "${workspaceFolder}/ToyRobotSimulator/ToyRobotSimulator.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+    }, {
+        "label": "test",
+        "command": "dotnet",
+        "type": "shell",
+        "group": "test",
+        "args": [
+            "test",
+            "${workspaceFolder}/ToyRobotSimulator.Tests/ToyRobotSimulator.Tests.csproj"
+        ],
+        "presentation": {
+            "reveal": "silent"
+        },
+        "problemMatcher": "$msCompile"
+    }]
+}
