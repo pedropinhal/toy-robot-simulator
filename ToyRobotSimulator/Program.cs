@@ -6,7 +6,10 @@ namespace ToyRobotSimulator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var robot = new Robot(new Map());
+            robot.Place(0,0, "North");
+            robot.Move();
+            Console.WriteLine(robot.Report());
         }
     }
 }
