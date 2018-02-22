@@ -1,3 +1,4 @@
+using System.Linq;
 using Moq;
 using Xunit;
 
@@ -5,32 +6,50 @@ namespace ToyRobotSimulator.Tests
 {
     public class RobotDriverTests
     {
-        Mock<IRobot> robot;
+        private Mock<IRobot> robot;
 
         public RobotDriverTests()
         {
             robot = new Mock<IRobot>();
         }
 
-        public void CanFeedCommandsToRobot()
+        [Fact]
+        public void CanGetReportsFromDriver()
         {
-            var driver = new RobotDriver(new Robot(new Map()));
-
-            driver.AddCommand("PLACE 0,0,NORTH");
+            var driver = new RobotDriver(robot.Object);
+            string report = "0,0,NORTH";
+            robot.Setup(r => r.Report()).Returns(report);
+            driver.AddCommand($"PLACE {report}");
+            driver.AddCommand("REPORT");
 
             driver.Drive();
 
-            Assert.Equal(driver.Output(), "0,0,NORTH");
+            Assert.Equal(driver.Reports.First(), report);
         }
 
         [Fact]
         public void CanAddCommandsToDriver()
         {
-            var driver = new RobotDriver(new Robot(new Map()));
+            var driver = new RobotDriver(robot.Object);
 
             driver.AddCommand("command");
 
             Assert.Equal(driver.Commands.Count, 1);
+        }
+
+        [Fact]
+        public void CanResetDriver()
+        {
+            var driver = new RobotDriver(robot.Object);
+            string report = "0,0,NORTH";
+            robot.Setup(r => r.Report()).Returns(report);
+            driver.AddCommand($"PLACE {report}");
+            driver.AddCommand("REPORT");
+            
+            driver.Reset();
+
+            Assert.Equal(driver.Commands.Count, 0);
+            Assert.Equal(driver.Reports.Count, 0);
         }
 
         [Fact]
@@ -109,7 +128,7 @@ namespace ToyRobotSimulator.Tests
             driver.AddCommand("PLACE 0,0,NORTH");
 
             driver.Drive();
-            
+
             robot.Verify(r => r.Move(), Times.Never);
             robot.Verify(r => r.Report(), Times.Never);
             robot.Verify(r => r.Left(), Times.Never);
