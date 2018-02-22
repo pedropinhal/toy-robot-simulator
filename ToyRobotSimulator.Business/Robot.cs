@@ -2,14 +2,6 @@ using System;
 
 namespace ToyRobotSimulator.Business
 {
-    public enum Direction
-    {
-        North,
-        South,
-        East,
-        West
-
-    }
     public class Robot : IRobot
     {
         private int X;
