@@ -11,20 +11,18 @@ namespace ToyRobotSimulator
         {
             var commands = ReadCommandsFromFile("Samples.txt");
             var driver = new RobotDriver(new Robot(new Map()));
-            
+
             foreach (var command in commands)
             {
-                if (string.IsNullOrEmpty(command))
-                {
-                    driver.Drive();
-                    driver.Reports.ForEach(r => Console.WriteLine(r));
-                    driver.Reset();
-                }
-                else
+                if (!string.IsNullOrEmpty(command))
                 {
                     driver.AddCommand(command);
                 }
             }
+
+            driver.Drive();
+            driver.Reports.ForEach(r => Console.WriteLine(r));
+            driver.Reset();
         }
 
         private static IList<string> ReadCommandsFromFile(string filename)

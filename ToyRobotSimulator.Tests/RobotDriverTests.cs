@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Moq;
 using ToyRobotSimulator.Business;
@@ -28,14 +29,19 @@ namespace ToyRobotSimulator.Tests
             Assert.Equal(driver.Reports.First(), report);
         }
 
-        [Fact]
-        public void CanAddCommandsToDriver()
+        [Theory]
+        [InlineData("command", 0)]
+        [InlineData("LEFT", 1)]
+        [InlineData("", 0)]
+        [InlineData(" ", 0)]
+
+        public void CanAddCommandsToDriver(string command, int expectedNumberOfCommands)
         {
             var driver = new RobotDriver(robot.Object);
 
-            driver.AddCommand("command");
+            driver.AddCommand(command);
 
-            Assert.Equal(driver.Commands.Count, 1);
+            Assert.Equal(driver.Commands.Count, expectedNumberOfCommands);
         }
 
         [Fact]
@@ -46,7 +52,7 @@ namespace ToyRobotSimulator.Tests
             robot.Setup(r => r.Report()).Returns(report);
             driver.AddCommand($"PLACE {report}");
             driver.AddCommand("REPORT");
-            
+
             driver.Reset();
 
             Assert.Equal(driver.Commands.Count, 0);
@@ -135,6 +141,34 @@ namespace ToyRobotSimulator.Tests
             robot.Verify(r => r.Left(), Times.Never);
             robot.Verify(r => r.Right(), Times.Never);
             robot.Verify(r => r.Place(0, 0, "NORTH"), Times.Once);
+        }
+
+        [Fact]
+        public void CommandsIgnoredIfRobotNotPlacedOnMap()
+        {
+            var driver = new RobotDriver(robot.Object);
+            robot.Setup(r => r.Place(-1, -1, "NORTH")).Throws<ArgumentOutOfRangeException>();
+
+            driver.AddCommand("PLACE -1,-1,NORTH");
+            driver.AddCommand("MOVE");
+            driver.AddCommand("REPORT");
+            driver.AddCommand("LEFT");
+            driver.AddCommand("RIGHT");
+
+            driver.AddCommand("PLACE 1,1,NORTH");
+
+            driver.AddCommand("MOVE");
+            driver.AddCommand("REPORT");
+            driver.AddCommand("LEFT");
+            driver.AddCommand("RIGHT");
+
+            driver.Drive();
+
+            robot.Verify(r => r.Move(), Times.Once);
+            robot.Verify(r => r.Report(), Times.Once);
+            robot.Verify(r => r.Left(), Times.Once);
+            robot.Verify(r => r.Right(), Times.Once);
+            robot.Verify(r => r.Place(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(2));
         }
     }
 }
