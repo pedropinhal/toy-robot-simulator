@@ -2,7 +2,7 @@ using System;
 
 namespace ToyRobotSimulator
 {
-    public class Robot
+    public class Robot : IRobot
     {
         private int X;
         private int Y;
