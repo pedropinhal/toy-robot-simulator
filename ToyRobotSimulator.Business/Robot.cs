@@ -2,11 +2,19 @@ using System;
 
 namespace ToyRobotSimulator.Business
 {
+    public enum Direction
+    {
+        North,
+        South,
+        East,
+        West
+
+    }
     public class Robot : IRobot
     {
         private int X;
         private int Y;
-        private string Facing;
+        private Direction Facing;
         public int MaxX { get; private set; }
         public int MaxY { get; private set; }
 
@@ -15,36 +23,36 @@ namespace ToyRobotSimulator.Business
             MaxX = map.Width;
             MaxY = map.Height;
             X = Y = 0;
-            Facing = "NORTH";
+            Facing = Direction.North;
         }
 
         public Robot(int x, int y, string facing)
         {
             this.X = x;
             this.Y = y;
-            this.Facing = facing.ToUpper();
+            this.Facing = (Direction)Enum.Parse(typeof(Direction), facing, true);
         }
 
         public string Report()
         {
-            return $"{X},{Y},{Facing}";
+            return $"{X},{Y},{Facing.ToString().ToUpper()}";
         }
 
         public void Left()
         {
             switch (Facing)
             {
-                case "NORTH":
-                    Facing = "WEST";
+                case Direction.North:
+                    Facing = Direction.West;
                     break;
-                case "SOUTH":
-                    Facing = "EAST";
+                case Direction.South:
+                    Facing = Direction.East;
                     break;
-                case "EAST":
-                    Facing = "NORTH";
+                case Direction.East:
+                    Facing = Direction.North;
                     break;
-                case "WEST":
-                    Facing = "SOUTH";
+                case Direction.West:
+                    Facing = Direction.South;
                     break;
             }
         }
@@ -53,17 +61,17 @@ namespace ToyRobotSimulator.Business
         {
             switch (Facing)
             {
-                case "NORTH":
-                    Facing = "EAST";
+                case Direction.North:
+                    Facing = Direction.East;
                     break;
-                case "SOUTH":
-                    Facing = "WEST";
+                case Direction.South:
+                    Facing = Direction.West;
                     break;
-                case "EAST":
-                    Facing = "SOUTH";
+                case Direction.East:
+                    Facing = Direction.South;
                     break;
-                case "WEST":
-                    Facing = "NORTH";
+                case Direction.West:
+                    Facing = Direction.North;
                     break;
             }
         }
@@ -72,25 +80,25 @@ namespace ToyRobotSimulator.Business
         {
             switch (Facing)
             {
-                case "NORTH":
+                case Direction.North:
                     if (Y + 1 <= MaxY)
                     {
                         Y++;
                     }
                     break;
-                case "SOUTH":
+                case Direction.South:
                     if (Y - 1 >= 0)
                     {
                         Y--;
                     }
                     break;
-                case "EAST":
+                case Direction.East:
                     if (X + 1 <= MaxX)
                     {
                         X++;
                     }
                     break;
-                case "WEST":
+                case Direction.West:
                     if (X - 1 >= 0)
                     {
                         X--;
@@ -108,7 +116,7 @@ namespace ToyRobotSimulator.Business
 
             X = x;
             Y = y;
-            Facing = facing.ToUpper();
+            Facing = (Direction)Enum.Parse(typeof(Direction), facing, true);
         }
     }
 }
