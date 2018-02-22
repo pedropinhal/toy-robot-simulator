@@ -73,16 +73,28 @@ namespace ToyRobotSimulator
             switch (Facing)
             {
                 case "NORTH":
-                    Y++;
+                    if (Y + 1 <= MaxY)
+                    {
+                        Y++;
+                    }
                     break;
                 case "SOUTH":
-                    Y--;
+                    if (Y - 1 >= 0)
+                    {
+                        Y--;
+                    }
                     break;
                 case "EAST":
-                    X++;
+                    if (X + 1 <= MaxX)
+                    {
+                        X++;
+                    }
                     break;
                 case "WEST":
-                    X--;
+                    if (X - 1 >= 0)
+                    {
+                        X--;
+                    }
                     break;
             }
         }
@@ -91,9 +103,9 @@ namespace ToyRobotSimulator
         {
             if (x > MaxX || x < 0 || y > MaxY || y < 0)
             {
-                throw new ArgumentOutOfRangeException($"{MaxX}{MaxY}");
+                throw new ArgumentOutOfRangeException($"{x}:{y} is out of bounds with {MaxX}:{MaxY}");
             }
-            
+
             X = x;
             Y = y;
             Facing = facing.ToUpper();

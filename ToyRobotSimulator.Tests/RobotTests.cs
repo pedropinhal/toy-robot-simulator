@@ -64,12 +64,12 @@ namespace ToyRobotSimulator.Tests
         [InlineData("West", "0,1,WEST")]
         public void CanMoveRobot(string facing, string expected)
         {
-            var robot = new Robot(1, 1, facing);
+            var robot = new Robot(new Map());
+            robot.Place(1, 1, facing);
 
             robot.Move();
 
             var result = robot.Report();
-
             Assert.Equal(result, expected);
         }
 
@@ -95,6 +95,25 @@ namespace ToyRobotSimulator.Tests
             var robot = new Robot(new Map(2, 2));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => robot.Place(x, y, "North"));
+        }
+
+        [Theory]
+        [InlineData(2, 2, "North", "2,2,NORTH")]
+        [InlineData(2, 2, "East", "2,2,EAST")]
+        [InlineData(2, 0, "East", "2,0,EAST")]
+        [InlineData(2, 0, "South", "2,0,SOUTH")]
+        [InlineData(0, 0, "South", "0,0,SOUTH")]
+        [InlineData(0, 0, "West", "0,0,WEST")]
+        [InlineData(0, 2, "West", "0,2,WEST")]
+        [InlineData(0, 2, "North", "0,2,NORTH")]
+        public void RobotIgnoresCommandsThatMovesOffSurface(int x, int y, string facing, string expected)
+        {
+            var robot = new Robot(new Map(2, 2));
+            robot.Place(x, y, facing);
+
+            robot.Move();
+
+            Assert.Equal(robot.Report(), expected);
         }
     }
 }
