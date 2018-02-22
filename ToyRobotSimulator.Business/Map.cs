@@ -1,6 +1,6 @@
 using System;
 
-namespace ToyRobotSimulator
+namespace ToyRobotSimulator.Business
 {
     public class Map
     {

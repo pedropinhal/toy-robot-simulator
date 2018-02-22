@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ToyRobotSimulator
+namespace ToyRobotSimulator.Business
 {
     public class RobotDriver
     {
@@ -27,11 +27,11 @@ namespace ToyRobotSimulator
         {
             foreach (string command in Commands)
             {
-                var parts = command.Split(" ");
+                var parts = command.Split(' ');
                 switch (parts[0])
                 {
                     case "PLACE":
-                        var args = parts[1].Split(",");
+                        var args = parts[1].Split(',');
                         robot.Place(Convert.ToInt32(args[0]), Convert.ToInt32(args[1]), args[2]);
                         RobotPlaced = true;
                         break;

@@ -1,4 +1,4 @@
-namespace ToyRobotSimulator
+namespace ToyRobotSimulator.Business
 {
     public interface IRobot
     {

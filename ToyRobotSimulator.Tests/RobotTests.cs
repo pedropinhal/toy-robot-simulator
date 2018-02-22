@@ -1,4 +1,5 @@
 using System;
+using ToyRobotSimulator.Business;
 using Xunit;
 
 namespace ToyRobotSimulator.Tests

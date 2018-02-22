@@ -1,5 +1,6 @@
 using System.Linq;
 using Moq;
+using ToyRobotSimulator.Business;
 using Xunit;
 
 namespace ToyRobotSimulator.Tests

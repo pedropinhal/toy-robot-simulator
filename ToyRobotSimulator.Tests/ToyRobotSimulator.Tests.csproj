@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ToyRobotSimulator\ToyRobotSimulator.csproj" />
+    <ProjectReference Include="..\ToyRobotSimulator.Business\ToyRobotSimulator.Business.csproj" />
   </ItemGroup>
 
 </Project>
